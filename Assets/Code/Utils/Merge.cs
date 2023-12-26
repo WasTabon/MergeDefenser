@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -7,6 +6,7 @@ public class Merge : MonoBehaviour
     public static Merge instance { get; private set; }
 
     [SerializeField] private GameObject[] _units;
+    [SerializeField] private GameObject _mergeParticles;
 
     private void Awake()
     {
@@ -35,6 +35,7 @@ public class Merge : MonoBehaviour
             Destroy(unitToMerge.gameObject);
 
             GameObject unitToSpawn = Instantiate(_units[randomUnit], spawnPos, Quaternion.identity);
+            Instantiate(_mergeParticles, spawnPos, Quaternion.identity);
             unitToSpawn.GetComponent<MergeUnit>().Rank = rank;
 
             return true;

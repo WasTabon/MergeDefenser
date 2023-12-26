@@ -14,15 +14,18 @@ public class MergeUnit : MonoBehaviour
         }
     }
     
-    protected bool unitTouched;
+    public bool UnitTouched { get; private set; }
     
     private int _rank;
-    private float sensitivity = 0.04f;
+    private const float Sensitivity = 0.04f;
 
     private bool _collisionWithUnit;
-    
-    private Vector3 lastMousePositionPC;
-    private Vector3 lastMousePositionPhone;
+
+    public event Action mainAbility;
+    public event Action idle;
+    public event Action merged;
+
+    private Vector3 _lastMousePosition;
     private Vector3 _startPos;
 
     private GameObject _mergedUnit;
@@ -39,14 +42,14 @@ public class MergeUnit : MonoBehaviour
     protected virtual void Update()
     {
         if (Input.touchCount > 0)
-            DragNDrop(Input.GetTouch(0).position, ref lastMousePositionPhone);
+            DragNDrop(Input.GetTouch(0).position, ref _lastMousePosition);
         else
-            DragNDrop(Input.mousePosition, ref lastMousePositionPC);
+            DragNDrop(Input.mousePosition, ref _lastMousePosition);
     }
 
     protected void OnTriggerStay(Collider coll)
     {
-        if (coll?.gameObject?.TryGetComponent(out MergeUnit mergeUnit) == true && unitTouched)
+        if (TriggeredMergedUnit(coll) && UnitTouched)
         {
             _collisionWithUnit = true;
             _mergedUnit = coll.gameObject;
@@ -55,7 +58,7 @@ public class MergeUnit : MonoBehaviour
 
     private void OnTriggerExit(Collider coll)
     {
-        if (coll?.gameObject?.TryGetComponent(out MergeUnit mergeUnit) == true && unitTouched)
+        if (TriggeredMergedUnit(coll) && UnitTouched)
         {
             _collisionWithUnit = false;
             _mergedUnit = null;
@@ -73,12 +76,12 @@ public class MergeUnit : MonoBehaviour
             }
         }
 
-        if (unitTouched)
+        if (UnitTouched)
         {
             MoveUnit(inputPos, ref lastPosition);
         }
 
-        if ((Input.GetMouseButtonUp(0) || TouchEnded()) && unitTouched)
+        if ((Input.GetMouseButtonUp(0) || TouchEnded()) && UnitTouched)
         {
             if (_collisionWithUnit && Merge.instance.Connect(gameObject, _mergedUnit))
             {
@@ -91,6 +94,20 @@ public class MergeUnit : MonoBehaviour
         }
     }
 
+    protected virtual void MainAbility()
+    {
+        mainAbility?.Invoke();
+    }
+
+    protected virtual void Idle()
+    {
+        idle?.Invoke();
+    }
+
+    protected virtual void Merged()
+    {
+        merged?.Invoke();
+    }
 
     private void SetColor(Color color)
     {
@@ -99,7 +116,7 @@ public class MergeUnit : MonoBehaviour
     
     private void MoveUnit(Vector3 mousePos, ref Vector3 lastPosition)
     {
-        Vector3 delta = (mousePos - lastPosition) * sensitivity;
+        Vector3 delta = (mousePos - lastPosition) * Sensitivity;
             
         transform.position += new Vector3(delta.x, 0f, delta.y);
 
@@ -108,18 +125,23 @@ public class MergeUnit : MonoBehaviour
 
     private void HitObject(Vector3 mousePos, ref Vector3 lastPosition)
     {
-        unitTouched = true;
+        UnitTouched = true;
         lastPosition = mousePos;
         SetColor(Color.red);
     }
 
     private void StopTouchObject()
     {
-        unitTouched = false;
+        UnitTouched = false;
         SetColor(Color.white);
         gameObject.transform.position = _startPos;
     }
 
+    private bool TriggeredMergedUnit(Collider coll)
+    {
+        return coll.gameObject.TryGetComponent(out MergeUnit _);
+    }
+    
     private bool TouchBegan()
     {
         return (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began);
