@@ -13,6 +13,16 @@ public class MergeUnit : MonoBehaviour
                 _rank = value;
         }
     }
+
+    public void SetTile(Transform tile)
+    {
+        _myTile = tile;
+    }
+
+    public Transform GetTile()
+    {
+        return _myTile;
+    }
     
     public bool UnitTouched { get; private set; }
     
@@ -25,6 +35,8 @@ public class MergeUnit : MonoBehaviour
     public event Action idle;
     public event Action merged;
 
+    private Transform _myTile;
+    
     private Vector3 _lastMousePosition;
     private Vector3 _startPos;
 
@@ -113,7 +125,7 @@ public class MergeUnit : MonoBehaviour
     {
         _skinnedMeshRenderer.materials[0].color = color;
     }
-    
+
     private void MoveUnit(Vector3 mousePos, ref Vector3 lastPosition)
     {
         Vector3 delta = (mousePos - lastPosition) * Sensitivity;
