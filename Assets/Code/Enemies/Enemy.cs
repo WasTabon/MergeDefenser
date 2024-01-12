@@ -6,16 +6,18 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private int _healthToSet;
     [SerializeField] private float _speed;
 
-    private float spawnTime;
-    
     public event Action died;
     
     private HealthSystem _healthSystem;
-    private bool _isDead;
+    public bool isDead { get; private set; }
 
+    private Collider _collider;
+    
     private void Start()
     {
         _healthSystem = new HealthSystem(_healthToSet);
+
+        _collider = GetComponent<Collider>();
     }
 
     private void Update()
@@ -31,9 +33,10 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        if (_healthSystem.GetHealth() <= 0 && !_isDead)
+        if (_healthSystem.GetHealth() <= 0 && !isDead)
         {
-            _isDead = true;
+            isDead = true;
+            _collider.enabled = false;
             PlayDeadAnimAndDeactivate();
         }
     }
@@ -48,26 +51,20 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         gameObject.SetActive(false);
     }
-    
-    
+
+    public int GetHealth()
+    {
+        return _healthSystem.GetHealth();
+    }
     public void Damage(int damageAmount)
     {
         _healthSystem.Damage(damageAmount);
     }
-    public float GetLifeTime()
-    {
-        return Time.time - spawnTime;
-    }
-    
-    private void OnEnable()
-    {
-        spawnTime = Time.time;
-    }
     private void OnDisable()
     {
-        _isDead = false;
+        isDead = false;
         _healthSystem.Heal(_healthToSet);
-        spawnTime = 0;
+        _collider.enabled = true;
         died?.Invoke();
     }
 }

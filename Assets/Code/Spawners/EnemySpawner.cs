@@ -5,10 +5,7 @@ using Random = UnityEngine.Random;
 public class EnemySpawner : MonoBehaviour
 {
     public static EnemySpawner instance { get; private set; }
-    
-    //public Enemy lastEnemy { get; private set; }
-    public Enemy lastEnemy;
-    
+
     [Header("POOL")]
     [SerializeField] private Enemy _prefab;
     [SerializeField] private bool _autoExpand;
@@ -43,19 +40,9 @@ public class EnemySpawner : MonoBehaviour
             Vector3 spawnPos = new Vector3(randomX, gameObject.transform.position.y, gameObject.transform.position.z);
             enemy.transform.position = spawnPos;
             enemy.gameObject.SetActive(true);
+        }
+    }
 
-            UpdateLastEnemy(enemy);
-        }
-    }
-    
-    private void UpdateLastEnemy(Enemy enemy)
-    {
-        if (lastEnemy == null || (lastEnemy != null && lastEnemy.GetLifeTime() < enemy.GetLifeTime()))
-        {
-            lastEnemy = enemy;
-        }
-    }
-    
     private void SetSingleton()
     {
         if (instance == null)

@@ -68,6 +68,37 @@ Transform:
   - {fileID: 2253765506960868327}
   m_Father: {fileID: 9080284169841215406}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &272717376987363853
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3398707373835501733}
+  m_Layer: 0
+  m_Name: ShotPos
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3398707373835501733
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 272717376987363853}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3807391525464624100}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &289949389893952313
 GameObject:
   m_ObjectHideFlags: 0
@@ -2236,6 +2267,7 @@ GameObject:
   - component: {fileID: 1506457094691899237}
   - component: {fileID: 4082987742267056608}
   - component: {fileID: 1649064607634405801}
+  - component: {fileID: 3214729465828316652}
   m_Layer: 0
   m_Name: Attacker
   m_TagString: Untagged
@@ -2259,6 +2291,7 @@ Transform:
   - {fileID: 2161654151110171521}
   - {fileID: 8974260011800949066}
   - {fileID: 6481299966617625829}
+  - {fileID: 3398707373835501733}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7630019358517356521
@@ -2367,6 +2400,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d5c39a8cd7729a4da8d69324abd5916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3214729465828316652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8269714454568951007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc2d4246e3ccef440a6061f375d9470c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeToNextShot: 3
+  _bullet: {fileID: 8392056204642750259, guid: 9f5bb4225f7015d41bd563c8009e3b46, type: 3}
+  _shootPos: {fileID: 3398707373835501733}
 --- !u!1 &8526053142466392585
 GameObject:
   m_ObjectHideFlags: 0
